@@ -30,7 +30,7 @@ $channel = $connection->channel();
 /**
      * Declares queue, creates if needed
      *
-     * @param string $queue
+     * @param string $queue        队列名
      * @param bool $passive
      * @param bool $durable        第3个参数ture 消息持久化 即rabbitmq崩溃或者退出消息会本地存储
      * @param bool $exclusive      独占通道
@@ -42,9 +42,34 @@ $channel = $connection->channel();
      * @return array|null
      */
 $channel->queue_declare('hello', false, false, false, false);
+//设置超时
+// $channel->queue_declare('test11', false, true, false, false, false, new AMQPTable(array(
+//      "x-dead-letter-exchange" => "t_test1",
+//      "x-message-ttl" => 15000,
+//      "x-expires" => 16000
+//   )));
+
 //构造消息
 $msgdata =  json_encode(array('a'=>'a1','b'=>'b1'));
-$msg = new AMQPMessage($msgdata);
+
+// AMQPMessage 第2个数组参数 
+//array(
+//      'content_type' => 'shortstr',
+//      'content_encoding' => 'shortstr',
+//      'application_headers' => 'table_object',
+//      'delivery_mode' => 'octet',
+//      'priority' => 'octet',
+//      'correlation_id' => 'shortstr',
+//      'reply_to' => 'shortstr',
+//      'expiration' => 'shortstr', 过期时间 1000=1秒
+//      'message_id' => 'shortstr',
+//      'timestamp' => 'timestamp',
+//      'type' => 'shortstr',
+//      'user_id' => 'shortstr',
+//      'app_id' => 'shortstr',
+//      'cluster_id' => 'shortstr',
+//  );
+$msg = new AMQPMessage($msgdata,array());
 /****
  * 推送消息到队里
  * $msg 消息数据

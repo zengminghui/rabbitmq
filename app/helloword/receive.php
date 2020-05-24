@@ -15,7 +15,21 @@ $callback = function ($msg) {
     $receive = json_decode($msg->body);
     echo ' 接受到的数据', var_export($receive,true) , "\n";
 };
-//消费hello通道
+/**
+     * Starts a queue consumer
+     *
+     * @param string $queue         队列名
+     * @param string $consumer_tag
+     * @param bool $no_local
+     * @param bool $no_ack
+     * @param bool $exclusive
+     * @param bool $nowait
+     * @param callable|null $callback
+     * @param int|null $ticket
+     * @param array $arguments
+     * @throws \PhpAmqpLib\Exception\AMQPTimeoutException if the specified operation timeout was exceeded
+     * @return mixed|string
+     */
 $channel->basic_consume('hello', '', false, true, false, false, $callback);
 
 while ($channel->is_consuming()) {

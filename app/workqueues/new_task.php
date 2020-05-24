@@ -35,9 +35,26 @@ $data = implode(' ', array_slice($argv, 1));
 if (empty($data)) {
     $data = "Hello World!";
 }
+// AMQPMessage 第2个数组参数 
+//array(
+//      'content_type' => 'shortstr',
+//      'content_encoding' => 'shortstr',
+//      'application_headers' => 'table_object',
+//      'delivery_mode' => 'octet',
+//      'priority' => 'octet',
+//      'correlation_id' => 'shortstr',
+//      'reply_to' => 'shortstr',
+//      'expiration' => 'shortstr', 过期时间 1000=1秒
+//      'message_id' => 'shortstr',
+//      'timestamp' => 'timestamp',
+//      'type' => 'shortstr',
+//      'user_id' => 'shortstr',
+//      'app_id' => 'shortstr',
+//      'cluster_id' => 'shortstr',
+//  );
 $msg = new AMQPMessage(
     $data,
-    array('delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT)
+    array('delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT,'expiration'=>8000)
 );
 /****
  * 推送消息到队里
