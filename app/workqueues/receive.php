@@ -26,7 +26,7 @@ $callback = function ($msg){
 //只有consumer已经处理并确认了上一条message时queue才分派新的message给它
 $channel->basic_qos(null, 1, null);
 //消费队列  其他交换机投递过期消息到delay_exchange交换机，交换机将消息投递到 delay_queue,至此我们实现了延迟消费
-//场景 课程开启后十分钟推送消息”,"订单生成后多少分钟自动取消"，"会员还有3天到期发送提醒"
+//场景 "课程开启后十分钟推送消息”,"订单生成后多少分钟自动取消"，"会员还有3天到期发送提醒"
 $channel->basic_consume('delay_queue','',false,false,false,false,$callback);
 
 
