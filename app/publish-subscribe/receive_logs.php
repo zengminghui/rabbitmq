@@ -13,6 +13,21 @@ $channel->exchange_declare('logs', 'fanout', false, false, false);
 /**
  * 获取一个全新、空的临时队列，队列名由系统自动生成，当与消费者断开连接时这个队列应当被立即删
  */
+//声明队列
+/**
+     * Declares queue, creates if needed
+     *
+     * @param string $queue
+     * @param bool $passive
+     * @param bool $durable        第3个参数ture 消息持久化 即rabbitmq崩溃或者退出消息会本地存储
+     * @param bool $exclusive      独占通道
+     * @param bool $auto_delete    自动删除
+     * @param bool $nowait         不等待
+     * @param array|\PhpAmqpLib\Wire\AMQPTable $arguments
+     * @param int|null $ticket
+     * @throws \PhpAmqpLib\Exception\AMQPTimeoutException if the specified operation timeout was exceeded
+     * @return array|null
+     */
 list($queue_name, ,) = $channel->queue_declare("", false, false, true, false);
 /**
  * 交换器与队列绑定
@@ -27,7 +42,21 @@ echo " [*] Waiting for logs. To exit press CTRL+C\n";
 $callback = function ($msg) {
     echo ' [x] ', $msg->body, "\n";
 };
-
+/**
+     * Starts a queue consumer
+     *
+     * @param string $queue         队列名
+     * @param string $consumer_tag
+     * @param bool $no_local
+     * @param bool $no_ack
+     * @param bool $exclusive
+     * @param bool $nowait
+     * @param callable|null $callback
+     * @param int|null $ticket
+     * @param array $arguments
+     * @throws \PhpAmqpLib\Exception\AMQPTimeoutException if the specified operation timeout was exceeded
+     * @return mixed|string
+     */
 $channel->basic_consume($queue_name, '', false, true, false, false, $callback);
 
 while ($channel->is_consuming()) {

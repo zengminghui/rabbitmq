@@ -1,4 +1,5 @@
 <?php
+/**队列 */
 require_once __DIR__ . '/../../vendor/autoload.php';
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -37,11 +38,26 @@ $callback = function ($msg) {
     echo " [x] Done\n";
     $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
 };
-
+//第2个参数 prefetch_count=1 只接受一条消息，直到处理完成并且响应后才会发送下一条消息过来，保证公平调度。
 $channel->basic_qos(null, 1, null);
 //消费者 第四个参数默认 no_ack=false 设置为ture 表示不响应ack 。消费者需要在任务处理完成后发送消息响应给rabbitmq服务。
 //如果消费者（consumer）挂掉了，没有发送响应，RabbitMQ就会认为消息没有被完全处理，然后重新发送给其他消费者（consumer）。
 //这样，及时工作者（workers）偶尔的挂掉，也不会丢失消息
+/**
+     * Starts a queue consumer
+     *
+     * @param string $queue         队列名
+     * @param string $consumer_tag
+     * @param bool $no_local
+     * @param bool $no_ack
+     * @param bool $exclusive
+     * @param bool $nowait
+     * @param callable|null $callback
+     * @param int|null $ticket
+     * @param array $arguments
+     * @throws \PhpAmqpLib\Exception\AMQPTimeoutException if the specified operation timeout was exceeded
+     * @return mixed|string
+     */
 $channel->basic_consume('task_queue', '', false, false, false, false, $callback);
 
 while ($channel->is_consuming()) {

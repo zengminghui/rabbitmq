@@ -23,7 +23,7 @@ $msg = new AMQPMessage($data);
 /****
  * 推送消息到队里
  * $msg 消息数据
- * ‘’命名为空字符串的默认交换机 交换机名称
+ * logs 交换机名称
  * hello routing_key 路由名称
  */
 $channel->basic_publish($msg, 'logs');

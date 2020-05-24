@@ -33,7 +33,21 @@ echo " [*] Waiting for logs. To exit press CTRL+C\n";
 $callback = function ($msg) {
     echo ' [x] ', $msg->delivery_info['routing_key'], ':', $msg->body, "\n";
 };
-
+/**
+     * Starts a queue consumer
+     *
+     * @param string $queue         队列名
+     * @param string $consumer_tag
+     * @param bool $no_local
+     * @param bool $no_ack
+     * @param bool $exclusive
+     * @param bool $nowait
+     * @param callable|null $callback
+     * @param int|null $ticket
+     * @param array $arguments
+     * @throws \PhpAmqpLib\Exception\AMQPTimeoutException if the specified operation timeout was exceeded
+     * @return mixed|string
+     */
 $channel->basic_consume($queue_name, '', false, true, false, false, $callback);
 
 while ($channel->is_consuming()) {

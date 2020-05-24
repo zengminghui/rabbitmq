@@ -23,7 +23,9 @@ $msg = new AMQPMessage($data);
  * 推送消息到队里
  * $msg 消息数据
  * logs 交换机名称
- * hello routing_key 路由键
+ *  routing_key 路由键
+ * 发送到主题交换机（topic exchange）的消息不可以携带随意什么样子的路由键（routing_key），它的路由键必须是一个由.分隔开的词语列表
+ * 几个推荐的例子："stock.usd.nyse", "nyse.vmw", "quick.orange.rabbit"
  */
 $channel->basic_publish($msg, 'topic_logs', $routing_key);
 

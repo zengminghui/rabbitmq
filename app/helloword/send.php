@@ -26,7 +26,21 @@ use PhpAmqpLib\Message\AMQPMessage;
 $connection = new AMQPStreamConnection('192.168.101.101', 5672, 'admin', 'admin','/itcast');
 //连接通道
 $channel = $connection->channel();
-//声明队列 第3个参数ture 消息持久化 即rabbitmq崩溃或者退出消息会本地存储
+//声明队列
+/**
+     * Declares queue, creates if needed
+     *
+     * @param string $queue
+     * @param bool $passive
+     * @param bool $durable        第3个参数ture 消息持久化 即rabbitmq崩溃或者退出消息会本地存储
+     * @param bool $exclusive      独占通道
+     * @param bool $auto_delete    自动删除
+     * @param bool $nowait         不等待
+     * @param array|\PhpAmqpLib\Wire\AMQPTable $arguments
+     * @param int|null $ticket
+     * @throws \PhpAmqpLib\Exception\AMQPTimeoutException if the specified operation timeout was exceeded
+     * @return array|null
+     */
 $channel->queue_declare('hello', false, false, false, false);
 //构造消息
 $msgdata =  json_encode(array('a'=>'a1','b'=>'b1'));
