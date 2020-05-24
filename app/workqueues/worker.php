@@ -36,6 +36,7 @@ $callback = function ($msg) {
     echo ' [x] Received ', $msg->body, "\n";
     sleep(substr_count($msg->body, '.'));
     echo " [x] Done\n";
+    //因为no_ack=false 所以需要进行ack应答，不应答可能会出现内存不足
     $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
 };
 //第2个参数 prefetch_count=1 只接受一条消息，直到处理完成并且响应后才会发送下一条消息过来，保证公平调度。
@@ -49,7 +50,7 @@ $channel->basic_qos(null, 1, null);
      * @param string $queue         队列名
      * @param string $consumer_tag
      * @param bool $no_local
-     * @param bool $no_ack
+     * @param bool $no_ack      no_ack = false 时，表示进行ack应答，确保消息已经处理
      * @param bool $exclusive
      * @param bool $nowait
      * @param callable|null $callback

@@ -25,7 +25,7 @@ if (empty($data)) {
 //      'content_type' => 'shortstr',
 //      'content_encoding' => 'shortstr',
 //      'application_headers' => 'table_object',
-//      'delivery_mode' => 'octet',
+//      'delivery_mode' => 'octet', DELIVERY_MODE_PERSISTENT->持久化 DELIVERY_MODE_NON_PERSISTENT->非持久化
 //      'priority' => 'octet',
 //      'correlation_id' => 'shortstr',
 //      'reply_to' => 'shortstr',

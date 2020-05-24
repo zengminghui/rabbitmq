@@ -57,7 +57,7 @@ $msgdata =  json_encode(array('a'=>'a1','b'=>'b1'));
 //      'content_type' => 'shortstr',
 //      'content_encoding' => 'shortstr',
 //      'application_headers' => 'table_object',
-//      'delivery_mode' => 'octet',
+//      'delivery_mode' => 'octet', DELIVERY_MODE_PERSISTENT->持久化 DELIVERY_MODE_NON_PERSISTENT->非持久化
 //      'priority' => 'octet',
 //      'correlation_id' => 'shortstr',
 //      'reply_to' => 'shortstr',
@@ -71,10 +71,13 @@ $msgdata =  json_encode(array('a'=>'a1','b'=>'b1'));
 //  );
 $msg = new AMQPMessage($msgdata,array());
 /****
- * 推送消息到队里
- * $msg 消息数据
- * ‘’命名为空字符串的默认交换机 交换机名称
- * hello routing_key 路由名称
+ *   #$msg object AMQPMessage对象
+     #$exchange string 交换机名字  
+     #$routing_key string 路由键 如果交换机类型
+     fanout： 该值会被忽略，因为该类型的交换机会把所有它知道的队列发消息，无差别区别
+     direct  只有精确匹配该路由键的队列，才会发送消息到该队列
+     topic   只有正则匹配到的路由键的队列，才会发送到该队列
+     $channel->basic_publish($msg,$exchange,$routing_key);
  */
 $channel->basic_publish($msg, '', 'hello');
 
