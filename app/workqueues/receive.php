@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 //具体原理是新建两条队列绑定对应的交换机，其中一条设置消息延迟执行，在到期后使用交换机丢到另一个交换机中，
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Wire\AMQPTable;
-$connection = new AMQPStreamConnection('192.168.101.101', 5672, 'admin', 'admin','/itcast');
+$connection = new AMQPStreamConnection('192.168.101.110', 5672, 'admin', 'admin','/itcast');
 $channel = $connection->channel();
 //声明交换机
 $channel->exchange_declare('delay_exchange', 'direct',false,false,false);

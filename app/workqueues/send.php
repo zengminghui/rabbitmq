@@ -1,12 +1,18 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
+// define('AMQP_DEBUG', true);
 //实现延迟队列
 //具体原理是新建两条队列绑定对应的交换机，其中一条设置消息延迟执行，在到期后使用交换机丢到另一个交换机中，
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPTable;
 
-$connection = new AMQPStreamConnection('192.168.101.101', 5672, 'admin', 'admin','/itcast');
+$connection = new AMQPStreamConnection('192.168.101.180', 5672, 'admin', 'admin','/itcast');
+// $connection = AMQPStreamConnection::create_connection([
+//     ['host' => '192.168.101.180', 'port' => 5672, 'user' => 'admin', 'password' => 'admin', 'vhost' => '/itcast'],
+  
+// ],
+// []);
 $channel = $connection->channel();
 //设置一个回调函数，该回调函数调用服务器确认的任何消息，并将AMQPMessage作为第一个参数。
 $channel->set_ack_handler(
@@ -48,9 +54,14 @@ $msg = new AMQPMessage('Hello World9000',array(
 ));
 
 
+for($i=0;$i<10;$i++)
+{
+    //sleep(1);
+    $channel->basic_publish($msg,'cache_exchange','cache_exchange',true);
+    echo date('Y-m-d H:i:s')." [x] Sent 'Hello World!' ".PHP_EOL;
+}
 
-$channel->basic_publish($msg,'cache_exchange','cache_exchange',true);
-echo date('Y-m-d H:i:s')." [x] Sent 'Hello World!' ".PHP_EOL;
+
 
 /**
  * 等待服务器上挂起的ack和nack。

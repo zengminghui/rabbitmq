@@ -24,14 +24,14 @@ use PhpAmqpLib\Message\AMQPMessage;
      * @param float $channel_rpc_timeout
      * @param string|null $ssl_protocol
      */
-$connection = new AMQPStreamConnection('192.168.101.101', 5672, 'admin', 'admin','/itcast');
+$connection = new AMQPStreamConnection('192.168.101.104', 5672, 'admin', 'admin','/itcast');
 //连接通道
 $channel = $connection->channel();
 //声明队列 第3个参数ture 消息持久化 即rabbitmq崩溃或者退出消息会本地存储
 
 $channel->queue_declare('task_queue', false, true, false, false);
-
-$data = implode(' ', array_slice($argv, 1));
+$data = array();
+//$data = implode(' ', array_slice($argv, 1));
 if (empty($data)) {
     $data = "Hello World!";
 }
@@ -54,7 +54,7 @@ if (empty($data)) {
 //  );
 $msg = new AMQPMessage(
     $data,
-    array('delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT,'expiration'=>8000)
+    array('delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT)
 );
 /****
  * 推送消息到队里
