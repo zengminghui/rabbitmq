@@ -7,11 +7,11 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPTable;
 
-$connection = new AMQPStreamConnection('192.168.101.180', 5672, 'admin', 'admin','/itcast');
+$connection = new AMQPStreamConnection('192.168.101.100', 5672, 'admin', 'admin','/itcast');
 // $connection = AMQPStreamConnection::create_connection([
 //     ['host' => '192.168.101.180', 'port' => 5672, 'user' => 'admin', 'password' => 'admin', 'vhost' => '/itcast'],
   
-// ],
+// ], 
 // []);
 $channel = $connection->channel();
 //设置一个回调函数，该回调函数调用服务器确认的任何消息，并将AMQPMessage作为第一个参数。
